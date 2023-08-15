@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lyrics Generator</title>
+    <style>
+        /* Center the content */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        #generateBtn {
+            margin: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lyrics Generator</h1>
+        <button id="generateBtn">Generate Lyrics</button>
+        <div id="lyricsOutput"></div>
+    </div>
+
+    <script>
+        document.getElementById("fetch-button").addEventListener("click", fetchData);
+
+function fetchData() {
+    fetch('/generate-lyrics')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("json-data").textContent = JSON.stringify(data);
+    })
+    .catch(error => console.error('Error fetching data:', error));
+}
+
+    </script>
+</body>
+</html>
