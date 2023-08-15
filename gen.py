@@ -1,15 +1,16 @@
-from nltk.tokenize import word_tokenize
-import random
 
+
+from nltk.tokenize import word_tokenize
+
+import random
 text=''
-with open("taylorlyrics.txt", 'r') as lyricstext:
+with open("taylyrics.txt", 'r') as lyricstext:
     text=lyricstext.readlines()
-    
-  
+
+#print(text) 
 def gen_text(text):
     generated_text = []
     for line in text:
-        
         tokens = word_tokenize(line)
         words = [word for word in tokens if word.isalpha()]
         generated_text += words
@@ -48,10 +49,10 @@ def markov_model_gen(lyr, n_gram=2):
 
 markov_model = markov_model_gen(lyrtext)
 #print(len(markov_model.keys()))
-print(markov_model['and i'])
+#print(markov_model['and i'])
 
 
-def generate_lyrics(model, limit=100, start='and i'):
+def generate_lyrics(model, limit=10, start='and i'):
     n = 0
     pstate = start
     nstate = None
@@ -65,7 +66,12 @@ def generate_lyrics(model, limit=100, start='and i'):
         n += 1
     return lyric
 
-for i in range(10):
-    print(generate_lyrics(markov_model, limit=100))
 
 
+def output_lyrics():
+    result=''
+    for i in range(10):
+        result+=generate_lyrics(markov_model, limit=10)+'\n\n'
+    return result
+
+print(output_lyrics())
