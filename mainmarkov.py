@@ -1,9 +1,14 @@
-
+import os
+from dotenv import load_dotenv
 import base64
 from requests import post, get
 import json
 import lyricsgenius
+load_dotenv()
 
+# Read the Spotify API credentials from environment variables
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 def get_token():
     auth_string = CLIENT_ID + ":" + CLIENT_SECRET
     auth_bytes = auth_string.encode("utf-8")
@@ -63,8 +68,8 @@ for song in songs:
         songs_list.append(song['name'])
     
     
-API_KEY = "wWRTQycAcCbVEpIqGfnFd_mEzvWOVyq_as6nOpADeSD_XQ4QATH-gObWyLZI-Yu3"
-  
+API_KEY = os.getenv("API_KEY")
+
 
 genius = lyricsgenius.Genius(access_token=API_KEY)
 genius.verbose = False
@@ -72,19 +77,27 @@ genius.verbose = False
 # Remove section headers (e.g. [Chorus]) from lyrics when searching
 genius.remove_section_headers = True
 artist = genius.search_artist(artist_name = "Taylor Swift", max_songs = 1, sort = "title")
+print(artist)
+       
 
-        
-with open("taylorlyrics.txt","w") as lyr:
+with open("taylyrics.txt",'a') as lyr:
     for song in songs_list:
-        curr_song = artist.song(song_name=song)
-        lyrics = curr_song.lyrics
-        ix = lyrics.find("Lyrics")
-        for l in lyrics[ix+6:-7]:
-            try:
-                l = l.lower()
-                if l in list('\n qwertyuioplkjhgfdsazxcvbnm'):
-                    lyr.write(l)
-            except UnicodeEncodeError:
+        curr_song = artist.song(song)
+        lyrs = curr_song.lyrics
+        #print(lyrs)
+        lyr_lines=lyrs.split('\n')
+        #print(lyr_lines)
+        lyr_lines[-1]=lyr_lines[-1][:-7]
+        for line in lyr_lines:
+            if len(line) == 0:
                 continue
+            elif line[0] in list('1234567890'):
+                continue
+            else:
+                for l in line:
+                    l=l.lower()
+                    if l in list('\n qwertyuioplkjhgfdsazxcvbnm'):
+                        lyr.write(l)
+                lyr.write('\n')
         
-                   
+           
