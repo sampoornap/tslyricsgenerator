@@ -6,7 +6,7 @@ import json
 import lyricsgenius
 load_dotenv()
 
-# Read the Spotify API credentials from environment variables
+# Reading the Spotify API credentials from environment variables
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 def get_token():
@@ -74,7 +74,7 @@ API_KEY = os.getenv("API_KEY")
 genius = lyricsgenius.Genius(access_token=API_KEY)
 genius.verbose = False
 
-# Remove section headers (e.g. [Chorus]) from lyrics when searching
+# For removing section headers from lyrics when searching
 genius.remove_section_headers = True
 artist = genius.search_artist(artist_name = "Taylor Swift", max_songs = 1, sort = "title")
 print(artist)
